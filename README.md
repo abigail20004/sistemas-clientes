@@ -28,4 +28,31 @@ dotnet restore
 # Configurar Jwt:Key en appsettings.json
 dotnet run
 
+### Frontend
+cd frontend-clientes
+npm install
+npm start
+" Frontend corre en http://localhost:3000 y se conecta al backend en http://localhost:5177."
 
+### Base de datos
+
+Ejecutar script_bd.sql en SQL Server para crear la base y las tablas principales:
+Roles: Cliente / Administrador
+Usuarios: Información de login y perfil
+Compras: Registro de compras por usuario
+
+### Endpoints principales
+| Método | Endpoint                           | Descripción                         |
+| ------ | ---------------------------------- | ----------------------------------- |
+| POST   | `/api/auth/registro-cliente`       | Registro de cliente                 |
+| POST   | `/api/auth/login`                  | Login de usuario                    |
+| GET    | `/api/compras/usuario/{usuarioId}` | Ver compras del cliente             |
+| POST   | `/api/compras`                     | Registrar compra                    |
+| GET    | `/api/admin/usuarios`              | Ver todos los clientes (solo admin) |
+| PUT    | `/api/admin/usuarios/{id}`         | Actualizar información del usuario  |
+| DELETE | `/api/admin/usuarios/{id}`         | Eliminar cliente (solo admin)       |
+
+### Seguridad
+- ** Roles y permisos implementados mediante middleware.**
+- ** Autenticación vía JWT.**
+- ** Restricción de endpoints según rol. **
