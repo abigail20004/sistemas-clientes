@@ -29,6 +29,8 @@ dotnet restore
 dotnet run
 
 ### Frontend
+
+```bash
 cd frontend-clientes
 npm install
 npm start
@@ -56,3 +58,4 @@ Compras: Registro de compras por usuario
 - ** Roles y permisos implementados mediante middleware.**
 - ** Autenticación vía JWT.**
 - ** Restricción de endpoints según rol. **
+
