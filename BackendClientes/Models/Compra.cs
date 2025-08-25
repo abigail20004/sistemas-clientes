@@ -9,6 +9,6 @@ namespace BackendClientes.Models
 
         // Relación con Usuario
         public int UsuarioId { get; set; }
-        public Usuario Usuario { get; set; } = null!;
+        public Usuario? Usuario { get; set; } = null!;
     }
 }

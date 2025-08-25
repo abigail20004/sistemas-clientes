@@ -1,4 +1,4 @@
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using BackendClientes.Data;
 using BackendClientes.DTOs;
@@ -17,31 +17,36 @@ namespace BackendClientes.Controllers
             _context = context;
         }
 
-        // Registrar compra
-        [HttpPost]
-        public async Task<IActionResult> RegistrarCompra([FromBody] Compra compra)
-        {
-            _context.Compras.Add(compra);
-            await _context.SaveChangesAsync();
-            return Ok(new { message = "Compra registrada" });
-        }
-
-        // Obtener compras de un usuario (solo sus compras)
-        [HttpGet("{usuarioId}")]
-        public async Task<IActionResult> GetComprasPorUsuario(int usuarioId)
+        // Obtener todas las compras de un usuario
+        [HttpGet("usuario/{usuarioId}")]
+        public async Task<IActionResult> ObtenerCompras(int usuarioId)
         {
             var compras = await _context.Compras
                 .Where(c => c.UsuarioId == usuarioId)
-                .Select(c => new CompraDto
-                {
-                    Id = c.Id,
-                    Producto = c.Producto,
-                    Monto = c.Monto,
-                    FechaCompra = c.FechaCompra
-                })
                 .ToListAsync();
 
             return Ok(compras);
+        }
+
+        // Registrar compra
+        [HttpPost]
+        public async Task<IActionResult> RegistrarCompra([FromBody] CompraDto compraDto)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            var compra = new Compra
+            {
+                UsuarioId = compraDto.UsuarioId,
+                Producto = compraDto.Producto,
+                Monto = compraDto.Monto,
+                FechaCompra = DateTime.Now
+            };
+
+            _context.Compras.Add(compra);
+            await _context.SaveChangesAsync();
+
+            return Ok(new { message = "Compra registrada" });
         }
     }
 }

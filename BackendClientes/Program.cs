@@ -41,9 +41,32 @@ builder.Services.AddAuthentication("Bearer")
 // --- Autorización ---
 builder.Services.AddAuthorization();
 
+// --- CORS (para React frontend) ---
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowFrontend",
+        policy =>
+        {
+            policy.WithOrigins("http://localhost:3000") // frontend en React
+                  .AllowAnyHeader()
+                  .AllowAnyMethod();
+        });
+});
+
+// --- Swagger (solo en desarrollo) ---
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen();
+
 var app = builder.Build();
 
 // --- Middleware ---
+if (app.Environment.IsDevelopment())
+{
+    app.UseSwagger();
+    app.UseSwaggerUI();
+}
+
+app.UseCors("AllowFrontend");
 app.UseAuthentication();
 app.UseAuthorization();
 

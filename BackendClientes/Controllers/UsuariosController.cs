@@ -48,6 +48,16 @@ namespace BackendClientes.Controllers
 
             return Ok(result);
         }
+        // Obtener todas las compras de un usuario
+        [HttpGet("usuario/{usuarioId}")]
+        public async Task<IActionResult> ObtenerCompras(int usuarioId)
+        {
+            var compras = await _context.Compras
+                .Where(c => c.UsuarioId == usuarioId)
+                .ToListAsync();
+
+            return Ok(compras);
+        }
         // UsuariosController (Admin)
         [HttpPost]
         public async Task<IActionResult> CrearUsuario([FromBody] UsuarioDto usuarioDto)
