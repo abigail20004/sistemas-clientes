@@ -1,0 +1,11 @@
+# Archivos y carpetas de Visual Studio
+.vs/
+bin/
+obj/
+
+# Configuración local
+appsettings.Development.json
+
+# Archivos temporales
+*.user
+*.suo
