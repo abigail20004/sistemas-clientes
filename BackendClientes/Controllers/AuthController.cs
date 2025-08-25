@@ -1,4 +1,4 @@
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using BackendClientes.Data;
 using BackendClientes.Models;
 using BackendClientes.Services;
@@ -38,10 +38,21 @@ namespace BackendClientes.Controllers
                 .FirstOrDefaultAsync(x => x.Email == creds.Email);
 
             if (usuario == null || !BCrypt.Net.BCrypt.Verify(creds.ContrasenaHash, usuario.ContrasenaHash))
-                return Unauthorized(new { message = "Credenciales inv�lidas" });
+                return Unauthorized(new { message = "Credenciales inválidas" });
 
             var token = _jwt.GenerateToken(usuario);
-            return Ok(new { token });
+
+            return Ok(new
+            {
+                token,
+                user = new
+                {
+                    id = usuario.Id,
+                    nombre = usuario.Nombre,
+                    email = usuario.Email
+                }
+            });
         }
+
     }
 }
